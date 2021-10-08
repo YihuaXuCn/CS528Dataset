@@ -1,19 +1,23 @@
 import pandas as pd
 import math
 import numpy as np
+from sklearn import datasets
+from sklearn import metrics
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import classification_report
 
 def expM4Q3(epsilon, groundTruth):
-  irisType = [0,1,2]
-  typesDict = {t:len([e for e in groundTruth if e == t]) for t in irisType}
-  deltaU = 1
-  typesDict = {key:math.exp((epsilon*value)/(2*deltaU)) for (key, value) in typesDict.items()}
+    irisType = [0,1,2]
+    typesDict = {t:len([e for e in groundTruth if e == t]) for t in irisType}
+    deltaU = 1
+    typesDict = {key:math.exp((epsilon*value)/(2*deltaU)) for (key, value) in typesDict.items()}
 
-  summary = sum(typesDict.values())
+    summary = sum(typesDict.values())
 
-  typeProbDict = {key:value/summary for (key, value) in typesDict.items()}
+    typeProbDict = {key:value/summary for (key, value) in typesDict.items()}
 
-  y = np.random.choice(list(typeProbDict.keys()), len(groundTruth), p = list(typeProbDict.values()))
-  return y
+    y = np.random.choice(list(typeProbDict.keys()), len(groundTruth), p = list(typeProbDict.values()))
+    return y
 
 if __name__ == '__main__':
     
@@ -33,11 +37,6 @@ if __name__ == '__main__':
     xTrain = dataTrain.loc[:,[0,1,2,3]]
     yTrain = dataTrain.loc[:,[4]]
     # print(xTrain.shape, yTrain, yTrain.to_numpy())
-
-    from sklearn import datasets
-    from sklearn import metrics
-    from sklearn.naive_bayes import GaussianNB
-    from sklearn.metrics import classification_report
 
     model = GaussianNB()
     model.fit(xTrain, yTrain.to_numpy().reshape((yTrain.shape[0],)))
